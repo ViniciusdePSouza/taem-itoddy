@@ -6,7 +6,7 @@ type FilterProps = TouchableOpacity & FilterStyleProps & {
     title: string
 }
 
-export function Filter({title, isActive = false, ...rest}: FilterProps){
+export function Filter({ title, isActive = false, ...rest }: FilterProps){
     return (
         <Container isActive={isActive} {...rest}>
             <Title>{title}</Title>
