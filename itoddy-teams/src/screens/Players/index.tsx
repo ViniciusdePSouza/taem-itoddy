@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRoute } from "@react-navigation/native";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 
@@ -13,10 +14,17 @@ import { Button } from "../../Components/Button";
 
 import { FlatList } from "react-native";
 
+type RouteParams = {
+  group: string
+}
+
 export function Players() {
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<string[]>([]);
   const [newPlayer, setNewPlayer] = useState<string>("");
+
+  const route = useRoute()
+  const { group } = route.params as RouteParams
 
   function removePlayer(playerName: string) {
     const newPlayersArray = players.filter((player) => player !== playerName);
@@ -36,7 +44,7 @@ export function Players() {
       <Header showBackButton />
 
       <Highlight
-        title="Nome da turma"
+        title={group}
         subtitle="Adicione a galera e separe os times"
       />
 
@@ -64,8 +72,7 @@ export function Players() {
             <Filter
               title={item}
               isActive={item === team}
-              onPress={() => setTeam(item)}
-            />
+              onPress={() => setTeam(item)} />
           )}
         />
 
