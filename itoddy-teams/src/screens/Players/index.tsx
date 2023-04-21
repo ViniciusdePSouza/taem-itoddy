@@ -15,17 +15,20 @@ import { FlatList } from "react-native";
 
 export function Players() {
   const [team, setTeam] = useState("Time A");
-  const [players, setPlayers] = useState(["Rodrigo", "Vini"]);
-  const [newPlayer, setNewPlayer] = useState<string>('')
+  const [players, setPlayers] = useState<string[]>([]);
+  const [newPlayer, setNewPlayer] = useState<string>("");
 
   function removePlayer(playerName: string) {
     const newPlayersArray = players.filter((player) => player !== playerName);
 
-    return setPlayers(newPlayersArray)
+    return setPlayers(newPlayersArray);
   }
 
   function handleAddPlayer(playerName: string) {
-    setPlayers(prevState => [...prevState, playerName])
+    setPlayers((prevState) => [...prevState, playerName]);
+
+    setNewPlayer("");
+    return;
   }
 
   return (
@@ -38,9 +41,18 @@ export function Players() {
       />
 
       <Form>
-        <TextInput placeholder="Nome da pessoa" autoCorrect={false} onChange={setNewPlayer}/>
+        <TextInput
+          placeholder="Nome da pessoa"
+          autoCorrect={false}
+          onChangeText={(newPlayerName) => setNewPlayer(newPlayerName)}
+          value={newPlayer}
+        />
 
-        <ButtonIcon icon="add" type="PRIMARY" onPress={() => handleAddPlayer(newPlayer)}/>
+        <ButtonIcon
+          icon="add"
+          type="PRIMARY"
+          onPress={() => handleAddPlayer(newPlayer)}
+        />
       </Form>
 
       <HeaderList>
