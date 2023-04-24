@@ -20,7 +20,8 @@ import { PLyerStorageDTO } from "@storage/player/PlayerStorageDTO";
 import { addPlayerByGroup } from "@storage/player/addPlayerBYGroup";
 import { getPlayerByGroupAndTeam } from "@storage/player/getPlayerByGroupAndTeam";
 
-import {TextInput} from 'react-native'
+import { TextInput } from "react-native";
+import { removePlayerByGroup } from "@storage/player/removePlayerByGroup";
 
 type RouteParams = {
   group: string;
@@ -34,7 +35,7 @@ export function Players() {
   const route = useRoute();
   const { group } = route.params as RouteParams;
 
-  const newPlayerNameInputRef = useRef<TextInput>(null)
+  const newPlayerNameInputRef = useRef<TextInput>(null);
 
   async function handleAddPlayer() {
     if (newPlayerName.trim().length === 0) {
@@ -52,11 +53,10 @@ export function Players() {
     try {
       await addPlayerByGroup(newPlayer, group);
 
-      newPlayerNameInputRef.current?.blur()
+      newPlayerNameInputRef.current?.blur();
 
       fetchPlayersByTeam();
       setNewPlayerName("");
-      
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("Novo Jogador", error.message);
@@ -79,6 +79,20 @@ export function Players() {
       Alert.alert("Novo Jogador", "Não foi possível adicionar o novo jogador");
     }
   }
+
+  async function handleRemovePlayer(playerName: string) {
+    try {
+      await removePlayerByGroup(playerName, group);
+      fetchPlayersByTeam();
+    } catch (err) {
+      console.log(err);
+      Alert.alert(
+        "Novo Jogador",
+        "Não foi possível remover o jogador selecionado"
+      );
+    }
+  }
+
   useEffect(() => {
     fetchPlayersByTeam();
   }, [team]);
@@ -96,6 +110,8 @@ export function Players() {
           autoCorrect={false}
           onChangeText={setNewPlayerName}
           value={newPlayerName}
+          onSubmitEditing={handleAddPlayer}
+          returnKeyType="done"
         />
 
         <ButtonIcon icon="add" type="PRIMARY" onPress={handleAddPlayer} />
@@ -121,7 +137,12 @@ export function Players() {
       <FlatList
         data={players}
         keyExtractor={(item) => item.name}
-        renderItem={({ item }) => <PlayerCard name={item.name} />}
+        renderItem={({ item }) => (
+          <PlayerCard
+            name={item.name}
+            onRemove={() => handleRemovePlayer(item.name)}
+          />
+        )}
         ListEmptyComponent={() => (
           <EmptyList message="Ainda não há membros no time" />
         )}
