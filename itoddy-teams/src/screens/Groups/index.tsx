@@ -17,6 +17,10 @@ export function Groups() {
 
   const navigation = useNavigation();
 
+  async function handleOpenGroup(group: string) {
+    navigation.navigate('players', { group })
+  }
+
   async function fetchGroups() {
     try {
       const data = await getAllGroups();
@@ -31,7 +35,6 @@ export function Groups() {
   }
 
   useFocusEffect(useCallback(() => {
-    console.log('useFocusEffect executou')
     fetchGroups()
   }, []))
 
@@ -43,7 +46,7 @@ export function Groups() {
       <FlatList
         data={groups}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => <GroupCard title={item} />}
+        renderItem={({ item }) => <GroupCard title={item} onPress={() => handleOpenGroup(item)}/>}
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
         ListEmptyComponent={() => (
           <EmptyList message="Ainda não há grupos criados" />

@@ -6,7 +6,7 @@ import { Alert, Text } from "react-native";
 import { Header } from "../../Components/Header";
 import { Highlight } from "../../Components/Highlight";
 import { Button } from "../../Components/Button";
-import { TextInput } from "../../Components/TextInput";
+import { Input } from "../../Components/TextInput";
 import { useNavigation } from "@react-navigation/native";
 import { groupCreate } from "@storage/group/groupCreate";
 import { AppError } from "@utils/AppError";
@@ -42,7 +42,7 @@ export function NewGroup() {
           title="Nova Turma"
           subtitle="crie a turma para adicionar pessoas "
         />
-        <TextInput
+        <Input
           placeholder="Qual o nome da nova equipe ?"
           onChangeText={setGroupName}
         />

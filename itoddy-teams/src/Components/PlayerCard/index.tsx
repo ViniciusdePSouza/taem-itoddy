@@ -4,17 +4,16 @@ import { ButtonIcon } from "../ButtonIcon";
 
 type PlayerCardProps = {
   name: string;
-  onRemove: () => void 
 };
 
-export function PlayerCard({ name, onRemove}: PlayerCardProps) {
+export function PlayerCard({ name }: PlayerCardProps) {
   return (
     <Container>
       <Icon name="person" />
 
       <Name>{name}</Name>
 
-      <ButtonIcon icon="close" type="SECONDARY" onPress={onRemove}/>
+      <ButtonIcon icon="close" type="SECONDARY" />
     </Container>
   );
 }
