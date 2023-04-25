@@ -24,6 +24,7 @@ import { TextInput } from "react-native";
 import { removePlayerByGroup } from "@storage/player/removePlayerByGroup";
 import { removeGroupByName } from "@storage/group/removeGroupByName";
 import { NewGroup } from "@screens/NewGroup";
+import { Loading } from "../../Components/Loading";
 
 type RouteParams = {
   group: string;
@@ -158,7 +159,8 @@ export function Players() {
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
 
-      <FlatList
+      { isLoading ? <Loading /> :
+        <FlatList
         data={players}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
@@ -176,6 +178,7 @@ export function Players() {
           players.length === 0 && { flex: 1 },
         ]}
       />
+      }
 
       <Button type="SECONDARY" title="Remover Turma" onPress={handleRemoveGroup}/>
     </Container>
