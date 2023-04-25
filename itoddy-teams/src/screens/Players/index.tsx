@@ -33,6 +33,7 @@ export function Players() {
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<PLyerStorageDTO[]>([]);
   const [newPlayerName, setNewPlayerName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true)
 
   const route = useRoute();
   const { group } = route.params as RouteParams;
@@ -76,11 +77,14 @@ export function Players() {
 
   async function fetchPlayersByTeam() {
     try {
+      setIsLoading(true)
       const playersByTeam = await getPlayerByGroupAndTeam(group, team);
       setPlayers(playersByTeam);
     } catch (error) {
       console.log(error);
       Alert.alert("Novo Jogador", "Não foi possível adicionar o novo jogador");
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -147,8 +151,7 @@ export function Players() {
             <Filter
               title={item}
               isActive={item === team}
-              onPress={() => setTeam(item)}
-            />
+              onPress={() => setTeam(item)} />
           )}
         />
 

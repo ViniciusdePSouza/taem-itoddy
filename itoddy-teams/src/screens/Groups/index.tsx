@@ -11,9 +11,11 @@ import { Button } from "../../Components/Button";
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { getAllGroups } from "@storage/group/getAllGroups";
+import { Loading } from "../../Components/Loading";
 
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const navigation = useNavigation();
 
@@ -23,10 +25,13 @@ export function Groups() {
 
   async function fetchGroups() {
     try {
+      setIsLoading(true)
       const data = await getAllGroups();
       setGroups(data);
     } catch (err) {
       console.log(err);
+    } finally{
+      setIsLoading(false)
     }
   }
 
@@ -43,7 +48,8 @@ export function Groups() {
       <Header showBackButton />
       <Highlight title="Turmas" subtitle="Jogue com a sua turma" />
 
-      <FlatList
+      { isLoading ? <Loading/> :
+        <FlatList
         data={groups}
         keyExtractor={(item) => item}
         renderItem={({ item }) => <GroupCard title={item} onPress={() => handleOpenGroup(item)}/>}
@@ -52,6 +58,7 @@ export function Groups() {
           <EmptyList message="Ainda não há grupos criados" />
         )}
       />
+      }
 
       <Button title="Criar Turma" onPress={handleNewGroup} />
     </Container>
